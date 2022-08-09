@@ -1,5 +1,7 @@
 const Pet = require('../models/Pet')
 
+const getToken = require('../helpers/GetToken')
+const getUserByToken = require('../helpers/GetUserByToken')
 
 module.exports = class PetController {
 
@@ -8,9 +10,6 @@ module.exports = class PetController {
         const { name, age, weight, color } = req.body
         const images = req.files
         const available = true
-
-        const getToken = require('../helpers/GetToken')
-        const getUserByToken = require('../helpers/GetUserByToken')
 
         //validations
         if (!name) {
@@ -26,7 +25,7 @@ module.exports = class PetController {
             return res.status(422).json({ message: 'The color is required!' })
         }
 
-        if(images.length < 1) {
+        if (images.length < 1) {
             return res.status(422).json({ message: 'The image is required!' })
 
         }
@@ -56,13 +55,40 @@ module.exports = class PetController {
         })
 
         try {
-            
+
             const newPet = await pet.save()
-            res.status(201).json({message: 'Pet cadastrado!', newPet})
+            res.status(201).json({ message: 'Pet cadastrado!', newPet })
 
         } catch (err) {
-            res.status(500).json({message: error})
+            res.status(500).json({ message: error })
         }
+
+    }
+
+    static async getPets(req, res) {
+
+        const { orderBy } = req.query
+
+        const order = !orderBy ? '-createdAt' : orderBy
+
+        const pets = await Pet.find().sort(order)
+
+        res.status(200).json({ pets })
+
+    }
+
+    static async getUserPets(req, res) {
+
+        const { orderBy } = req.query
+
+        const order = !orderBy ? '-createdAt' : orderBy
+
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        const pets = await Pet.find({ 'user._id': user._id }).sort(order)
+
+        res.status(200).json({ pets })
 
     }
 
