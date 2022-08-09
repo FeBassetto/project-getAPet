@@ -157,7 +157,7 @@ module.exports = class UserController {
         }
 
         if (id !== user.id) {
-            return res.status(422).json({ message: 'The user id is  incorrect' })
+            return res.status(422).json({ message: 'The user id or token is incorrect!' })
         }
 
         try {
