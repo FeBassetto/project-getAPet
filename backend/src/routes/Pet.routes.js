@@ -10,5 +10,6 @@ petRouter.get('/', PetController.getPets)
 petRouter.get('/mypets', verifyToken, PetController.getUserPets)
 petRouter.get('/myadoptions', verifyToken, PetController.getUserAdoptions)
 petRouter.get('/:id', PetController.getPetById)
+petRouter.delete('/:id', verifyToken, PetController.removePetById)
 
 module.exports = petRouter
