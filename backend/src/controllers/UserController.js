@@ -171,6 +171,9 @@ module.exports = class UserController {
             res.status(422).json({ message: 'The name is required!' })
             return
         }
+
+        user.name = name
+
         if (!email) {
             res.status(422).json({ message: 'The email is required!' })
             return
@@ -186,12 +189,17 @@ module.exports = class UserController {
 
         if (userExists && user.email !== email) {
             res.status(422).json({ message: 'This email is already in use!' })
+            return
         }
+
+        user.email = email
 
         if (!phone) {
             res.status(422).json({ message: 'The phone is required!' })
             return
         }
+
+        user.phone = phone
 
         if (password !== confirmpassword) {
             res.status(422).json({ message: 'The password confirmation is different from the password!' })
@@ -204,6 +212,7 @@ module.exports = class UserController {
             user.password = passwordHash
 
         }
+
 
         try {
             await User.findOneAndUpdate({ _is: user._id }, { $set: user }, { new: true })
