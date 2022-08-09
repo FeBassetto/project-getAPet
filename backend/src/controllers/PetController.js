@@ -2,6 +2,7 @@ const Pet = require('../models/Pet')
 
 const getToken = require('../helpers/GetToken')
 const getUserByToken = require('../helpers/GetUserByToken')
+const ObjectId = require('mongoose').Types.ObjectId
 
 module.exports = class PetController {
 
@@ -89,6 +90,40 @@ module.exports = class PetController {
         const pets = await Pet.find({ 'user._id': user._id }).sort(order)
 
         res.status(200).json({ pets })
+
+    }
+
+    static async getUserAdoptions(req, res) {
+
+        const { orderBy } = req.query
+
+        const order = !orderBy ? '-createdAt' : orderBy
+
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        const pets = await Pet.find({ 'adopter._id': adopter._id }).sort(order)
+
+        res.status(200).json({ pets })
+
+    }
+
+    static async getPetById(req, res) {
+
+        const { id } = req.params
+
+        if (!ObjectId.isValid(id)) {
+            return res.status(422).json({ message: 'Invalid Id!' })
+        }
+
+        try {
+            const pet = await Pet.findOne({ _id: id })
+            res.status(200).json({ pet })
+        } catch (err) {
+            res.status(404).json({ message: 'Pet not found!' })
+        }
+
+
 
     }
 
