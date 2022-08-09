@@ -152,7 +152,9 @@ module.exports = class UserController {
         const token = getToken(req)
         const user = await getUserByToken(token)
 
-        let image = ''
+        if (req.file) {
+            user.image = req.file.filename
+        }
 
         if (id !== user.id) {
             return res.status(422).json({ message: 'The user id is  incorrect' })
@@ -205,7 +207,7 @@ module.exports = class UserController {
 
         try {
             await User.findOneAndUpdate({ _is: user._id }, { $set: user }, { new: true })
-            res.status(200).json({message: 'User updated with success!'})
+            res.status(200).json({ message: 'User updated with success!' })
         } catch (err) {
             return res.status(500).json({ message: err })
         }
