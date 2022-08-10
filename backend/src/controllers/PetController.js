@@ -263,7 +263,38 @@ module.exports = class PetController {
 
         await Pet.findByIdAndUpdate(id, pet)
 
-        res.status(200).json({message: 'The visit was successfully registered!'})
+        res.status(200).json({ message: 'The visit was successfully registered!' })
+
+    }
+
+
+    static async concludeAdoption(req, res) {
+
+        const { id } = req.params
+
+        if (!ObjectId.isValid(id)) {
+            return res.status(422).json({ message: 'Invalid Id!' })
+        }
+
+        const pet = await Pet.findOne({ _id: id })
+
+        if (!pet) {
+            return res.status(404).json({ message: 'Pet does not exist!' })
+        }
+
+        //check if user registered the pet
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        if (String(pet.user._id) !== String(user._id)) {
+            return res.status(422).json({ message: 'Unable to conclude!' })
+        }
+
+        pet.available = false
+
+        await Pet.findByIdAndUpdate(id, pet)
+
+        res.status(200).json({message: 'The pet was adopted with success!'})
 
     }
 

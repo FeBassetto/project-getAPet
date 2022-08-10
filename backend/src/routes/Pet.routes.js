@@ -13,5 +13,6 @@ petRouter.get('/:id', PetController.getPetById)
 petRouter.delete('/:id', verifyToken, PetController.removePetById)
 petRouter.patch('/:id', verifyToken, imageUpload.array('images'), PetController.updatePet)
 petRouter.patch('/schedule/:id', verifyToken, PetController.schedule)
+petRouter.patch('/conclude/:id', verifyToken, PetController.concludeAdoption)
 
 module.exports = petRouter
