@@ -181,31 +181,31 @@ module.exports = class PetController {
             return res.status(422).json({ message: 'The name is required!' })
         }
 
-        updatedData.name = name 
+        updatedData.name = name
 
         if (!age) {
             return res.status(422).json({ message: 'The age is required!' })
         }
 
-        updatedData.age = age 
+        updatedData.age = age
 
         if (!weight) {
             return res.status(422).json({ message: 'The weight is required!' })
         }
 
-        updatedData.weight = weight 
+        updatedData.weight = weight
 
         if (!color) {
             return res.status(422).json({ message: 'The color is required!' })
         }
 
-        updatedData.color = color 
+        updatedData.color = color
 
         if (!available) {
             return res.status(422).json({ message: 'The available is required!' })
         }
 
-        updatedData.available = available 
+        updatedData.available = available
 
         if (images.length < 1) {
             return res.status(422).json({ message: 'The image is required!' })
@@ -214,13 +214,56 @@ module.exports = class PetController {
         updatedData.images = []
         images.map(image => {
             updatedData.images.push(image.filename)
-        }) 
+        })
 
         console.log(updatedData)
 
         await Pet.findByIdAndUpdate(id, updatedData)
 
-        res.status(200).json({message: 'Pet has been successfully modified!'})
+        res.status(200).json({ message: 'Pet has been successfully modified!' })
+
+    }
+
+    static async schedule(req, res) {
+
+        const { id } = req.params
+
+        if (!ObjectId.isValid(id)) {
+            return res.status(422).json({ message: 'Invalid Id!' })
+        }
+
+        const pet = await Pet.findOne({ _id: id })
+
+        if (!pet) {
+            return res.status(404).json({ message: 'Pet does not exist!' })
+        }
+
+
+        //check if user registered the pet
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        if (pet.user._id.equals(user._id)) {
+            return res.status(422).json({ message: 'You cannot schedule a visit with your own pet!' })
+        }
+
+        //check if user has already scheduled a visit
+        if (pet.adopter) {
+            if (pet.adopter._id.equals(user._id)) {
+                return res.status(422).json({ message: 'User has already scheduled a visit for this pet!' })
+            }
+        }
+
+        //add user to pet
+        pet.adopter = {
+            _id: user._id,
+            name: user.name,
+            image: user.image
+        }
+
+        await Pet.findByIdAndUpdate(id, pet)
+
+        res.status(200).json({message: 'The visit was successfully registered!'})
 
     }
 
