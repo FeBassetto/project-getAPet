@@ -12,6 +12,7 @@ import Container from "./layouts/Container/Container";
 import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
+import Profile from "./pages/User/Profile";
 
 //components
 import Message from "./components/Message/Message";
@@ -29,6 +30,7 @@ const Routing = () => {
                         <Route exact path='/' element={<Home />} />
                         <Route exact path='/login' element={<Login />} />
                         <Route exact path='/register' element={<Register />} />
+                        <Route exact path='/user/profile' element={<Profile />} />
                     </Routes>
                 </Container>
                 <Footer />

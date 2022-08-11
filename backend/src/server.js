@@ -11,7 +11,8 @@ app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
 
 app.use(express.urlencoded({ extended: true }))
 
-app.use(express.static('public'))
+app.use(express.static('src/public'))
+app.use('/images', express.static('images'));
 
 app.use(router)
 

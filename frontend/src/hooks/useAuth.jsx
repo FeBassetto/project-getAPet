@@ -16,7 +16,10 @@ const useAuth = () => {
 
         if (token) {
             api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`
+            setAuthenticated(false)
         }
+
+        setAuthenticated(true)
 
     }, [])
 
@@ -74,6 +77,48 @@ const useAuth = () => {
 
     }
 
+    async function getPrivateUserInformations(token) {
+
+        try {
+
+            const data = api.get('users/checkuser', {
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(token)}`
+                }
+            }).then(res => {
+                return res.data
+            })
+
+            return data
+
+        } catch (err) {
+            return
+        }
+
+    }
+
+    async function editUser(token, user) {
+
+        api.patch(`users/edit/${user._id}`, user, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(token)}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(res => {
+            let msgType = 'success'
+            let msgText = 'Modificado com sucesso!'
+
+            setFlashMessage(msgText, msgType)
+
+        }).catch(err => {
+            let msgType = 'error'
+            let msgText = err.response.data.message
+
+            setFlashMessage(msgText, msgType)
+        })
+
+    }
+
     async function logout() {
 
         const msgText = 'Logout Realizado com sucesso'
@@ -88,7 +133,14 @@ const useAuth = () => {
 
     }
 
-    return { register, authenticated, logout, login }
+    return {
+        register,
+        authenticated,
+        logout,
+        login,
+        getPrivateUserInformations,
+        editUser
+    }
 
 }
 

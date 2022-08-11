@@ -36,3 +36,8 @@
     color: #16479D;
     font-weight: bold;
 }
+
+.profile_container{
+    text-align: center;
+    margin-bottom: 1em;
+}
