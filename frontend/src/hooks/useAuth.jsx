@@ -42,6 +42,28 @@ const useAuth = () => {
 
     }
 
+    async function login(user) {
+
+        let msgText = 'Usuário logado!'
+        let msgType = 'success'
+
+        try {
+
+            const data = await api.post('users/login', user).then(res => {
+                return res.data
+            })
+
+            await authUser(data)
+
+        } catch (err) {
+            msgText = err.response.data.message
+            msgType = 'error'
+        }
+
+        setFlashMessage(msgText, msgType)
+
+    }
+
     async function authUser(data) {
 
         setAuthenticated(true)
@@ -52,7 +74,21 @@ const useAuth = () => {
 
     }
 
-    return { register, authenticated }
+    async function logout() {
+
+        const msgText = 'Logout Realizado com sucesso'
+        const msgType = 'success'
+
+        setAuthenticated(false)
+        localStorage.removeItem('token')
+        api.defaults.headers.Authorization = undefined
+        navigate('/')
+
+        setFlashMessage(msgText, msgType)
+
+    }
+
+    return { register, authenticated, logout, login }
 
 }
 

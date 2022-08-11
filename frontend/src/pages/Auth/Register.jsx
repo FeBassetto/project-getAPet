@@ -1,11 +1,10 @@
 import React from "react";
-import Form from "../../components/Form/Form";
-
+import RegisterForm from "../../components/Forms/RegisterForm";
 
 const Register = () => {
     return (
         <section>
-            <Form />
+            <RegisterForm />
         </section>
     )
 }

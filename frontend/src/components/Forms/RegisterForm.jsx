@@ -5,9 +5,9 @@ import Input from "../Input/Input";
 import { Link } from "react-router-dom";
 import { Context } from "../../context/UserContext";
 
-const Form = () => {
+const RegisterForm = () => {
 
-    const [user, setUser] = useState('')
+    const [user, setUser] = useState({})
     const { register } = useContext(Context)
 
     function handleChange(e) {
@@ -72,4 +72,4 @@ const Form = () => {
     )
 }
 
-export default Form
+export default RegisterForm

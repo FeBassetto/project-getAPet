@@ -1,10 +1,10 @@
 import React from "react";
-
+import LoginForm from "../../components/Forms/LoginForm";
 
 const Login = () => {
     return (
         <section>
-            <h1>Login</h1>
+            <LoginForm />
         </section>
     )
 }
