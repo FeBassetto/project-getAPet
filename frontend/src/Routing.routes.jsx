@@ -13,6 +13,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import Profile from "./pages/User/Profile";
+import MyPets from "./pages/Pet/MyPets";
+import AddPet from "./pages/Pet/AddPet";
 
 //components
 import Message from "./components/Message/Message";
@@ -31,6 +33,8 @@ const Routing = () => {
                         <Route exact path='/login' element={<Login />} />
                         <Route exact path='/register' element={<Register />} />
                         <Route exact path='/user/profile' element={<Profile />} />
+                        <Route exact path='/pet/mypets' element={<MyPets />} />
+                        <Route exact path='/pet/add' element={<AddPet />} />
                     </Routes>
                 </Container>
                 <Footer />

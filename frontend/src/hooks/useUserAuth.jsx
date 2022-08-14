@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import useFlashMessage from "./useFlashMessage";
 import { useNavigate } from "react-router-dom";
 
-const useAuth = () => {
+const useUserAuth = () => {
 
     const { setFlashMessage } = useFlashMessage()
     const [authenticated, setAuthenticated] = useState(false)
@@ -133,15 +133,54 @@ const useAuth = () => {
 
     }
 
+    //Pet
+    async function registerPet(token, pet) {
+
+        let msgType = 'success'
+        let msgText = 'Pet cadastrado com sucesso!'
+
+        const formData = new FormData()
+
+        Object.keys(pet).forEach(key => {
+            if (key === 'images') {
+                // eslint-disable-next-line array-callback-return
+                pet[key].map(image => {
+                    formData.append('images', image);
+                });
+            } else {
+                formData.append(key, pet[key]);
+            }
+        })
+
+        api.post('pets/create', formData, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(token)}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(res => {
+            setFlashMessage(msgText, msgType)
+
+            navigate('/')
+        }).catch(err => {
+            let msgType = 'error'
+            let msgText = err.response.data.message
+
+            setFlashMessage(msgText, msgType)
+        })
+
+
+    }
+
     return {
         register,
         authenticated,
         logout,
         login,
         getPrivateUserInformations,
-        editUser
+        editUser,
+        registerPet
     }
 
 }
 
-export default useAuth
+export default useUserAuth

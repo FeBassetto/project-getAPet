@@ -41,3 +41,18 @@
     text-align: center;
     margin-bottom: 1em;
 }
+
+/*Pets*/
+.preview_pet_images{
+    display: flex;
+    justify-content: center;
+
+    margin-bottom: 1em;
+}
+
+.preview_pet_images img{
+    width: 100px;
+    height: 100px;
+
+    margin: 1em;
+}
