@@ -16,6 +16,7 @@ import Profile from "./pages/User/Profile";
 import MyPets from "./pages/Pet/MyPets";
 import AddPet from "./pages/Pet/AddPet";
 import EditPet from "./pages/Pet/EditPet";
+import PetDetails from "./pages/Pet/PetDetails";
 
 //components
 import Message from "./components/Message/Message";
@@ -37,11 +38,11 @@ const Routing = () => {
                         <Route path='/pet/mypets' element={<MyPets />} />
                         <Route path='/pet/add' element={<AddPet />} />
                         <Route path="/pet/edit/:id" element={<EditPet />} />
+                        <Route path="/pet/:id" element={<PetDetails />} />
                     </Routes>
                 </Container>
                 <Footer />
             </UserProvider>
-
         </Router>
     )
 }
