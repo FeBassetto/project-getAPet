@@ -5,7 +5,7 @@ import styles from './Dashboard.module.css'
 import PetForm from "../../components/Forms/PetForm";
 
 import useFlashMessage from "../../hooks/useFlashMessage";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../../utils/api";
 
 const EditPet = () => {
@@ -14,6 +14,7 @@ const EditPet = () => {
     const [token] = useState(localStorage.getItem('token') || '')
     const { id } = useParams()
     const { setFlashMessage } = useFlashMessage()
+    const navigate = useNavigate()
 
     async function updatePet(e) {
 
@@ -43,7 +44,7 @@ const EditPet = () => {
             }
         })
         .then(res => {
-            console.log(res)
+            navigate('/')
             return res.data
         })
         .catch(err => {

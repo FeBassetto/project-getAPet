@@ -207,7 +207,7 @@ module.exports = class PetController {
 
         updatedData.available = available
 
-        if (images) {
+        if (images.length > 0) {
             updatedData.images = []
             images.map(image => {
                 updatedData.images.push(image.filename)
