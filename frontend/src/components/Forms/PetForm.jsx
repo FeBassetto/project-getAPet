@@ -4,16 +4,12 @@ import styles from './Form.module.css'
 import Input from '../Input/Input'
 import Select from "../Select/Select";
 
-import { Context } from "../../context/UserContext";
 
-const PetForm = () => {
+const PetForm = ({ handleSubmit, pet, setPet, btnText }) => {
 
-    const [pet, setPet] = useState({})
     const [preview, setPreview] = useState([])
-    const [token] = useState(localStorage.getItem('token'))
     const colors = ['Branco', 'Preto', 'Cinza', 'Caramelo', 'Mesclado']
 
-    const { registerPet } = useContext(Context)
 
     function onFilechange(e) {
         setPreview(Array.from(e.target.files))
@@ -28,14 +24,10 @@ const PetForm = () => {
         setPet({ ...pet, color: e.target.options[e.target.selectedIndex].text })
     }
 
-    async function onSubmit(e) {
-        e.preventDefault()
 
-        await registerPet(token, pet)
-    }
 
     return (
-        <form className={styles.form_container} onSubmit={e => onSubmit(e)}>
+        <form className={styles.form_container} onSubmit={e => handleSubmit(e)}>
             <div className={styles.preview_pet_images}>
                 {preview.length > 0 ?
                     preview.map((image, index) => (
@@ -97,7 +89,7 @@ const PetForm = () => {
                 value={pet.color || ''}
             />
 
-            <input type="submit" value="Cadastrar Pet" />
+            <input type="submit" value={btnText} />
         </form>
     )
 }

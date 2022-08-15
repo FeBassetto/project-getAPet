@@ -15,6 +15,7 @@ import Register from "./pages/Auth/Register";
 import Profile from "./pages/User/Profile";
 import MyPets from "./pages/Pet/MyPets";
 import AddPet from "./pages/Pet/AddPet";
+import EditPet from "./pages/Pet/EditPet";
 
 //components
 import Message from "./components/Message/Message";
@@ -30,11 +31,12 @@ const Routing = () => {
                 <Container>
                     <Routes>
                         <Route exact path='/' element={<Home />} />
-                        <Route exact path='/login' element={<Login />} />
-                        <Route exact path='/register' element={<Register />} />
-                        <Route exact path='/user/profile' element={<Profile />} />
-                        <Route exact path='/pet/mypets' element={<MyPets />} />
-                        <Route exact path='/pet/add' element={<AddPet />} />
+                        <Route path='/login' element={<Login />} />
+                        <Route path='/register' element={<Register />} />
+                        <Route path='/user/profile' element={<Profile />} />
+                        <Route path='/pet/mypets' element={<MyPets />} />
+                        <Route path='/pet/add' element={<AddPet />} />
+                        <Route path="/pet/edit/:id" element={<EditPet />} />
                     </Routes>
                 </Container>
                 <Footer />

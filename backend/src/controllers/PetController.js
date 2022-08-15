@@ -207,14 +207,12 @@ module.exports = class PetController {
 
         updatedData.available = available
 
-        if (images.length < 1) {
-            return res.status(422).json({ message: 'The image is required!' })
+        if (images) {
+            updatedData.images = []
+            images.map(image => {
+                updatedData.images.push(image.filename)
+            })
         }
-
-        updatedData.images = []
-        images.map(image => {
-            updatedData.images.push(image.filename)
-        })
 
         console.log(updatedData)
 
@@ -294,7 +292,7 @@ module.exports = class PetController {
 
         await Pet.findByIdAndUpdate(id, pet)
 
-        res.status(200).json({message: 'The pet was adopted with success!'})
+        res.status(200).json({ message: 'The pet was adopted with success!' })
 
     }
 
